@@ -12,5 +12,5 @@ def create_customer(customer: Customer):
 
 
 @router.get("", response_model=list[CustomerOut])
-def lista_clientes():
+def customers_list():
     return customer_service.customers_list()
