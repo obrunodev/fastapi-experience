@@ -33,3 +33,7 @@ def patch_customer(customer_id: str, customer_data: CustomerUpdate):
         customer_id,
         customer_data
     )
+
+@router.delete("/{customer_id}")
+def delete_customer(customer_id: str):
+    return customer_service.delete_customer_by_id(customer_id)

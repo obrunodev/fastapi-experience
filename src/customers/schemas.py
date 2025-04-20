@@ -20,3 +20,9 @@ class CustomerOut(Customer):
 
     class Config:
         from_attribute = True
+
+    @classmethod
+    def from_mongo(cls, doc: dict):
+        return cls(id=str(doc["_id"]),
+                   name=doc["name"],
+                   email=doc["email"])
