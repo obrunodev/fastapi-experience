@@ -1,6 +1,5 @@
 from bson import ObjectId
 from fastapi import HTTPException
-from fastapi.responses import JSONResponse
 from src.config.database import MongoDBConfig
 from src.customers.schemas import Customer, CustomerUpdate, CustomerOut
 
@@ -18,7 +17,10 @@ class CustomerService:
 
         customer = customers.find_one({"_id": object_id})
         if not customer:
-            raise HTTPException(status_code=404, detail="Cliente não encontrado")
+            raise HTTPException(
+                status_code=404,
+                detail="Cliente não encontrado"
+            )
 
         return customer
 
@@ -34,17 +36,26 @@ class CustomerService:
     @staticmethod
     def customers_list() -> list[CustomerOut]:
         customers_list = customers.find()
-        return [CustomerOut.from_mongo(c) for c in customers_list]
+        return [
+            CustomerOut.from_mongo(c)
+            for c in customers_list if customers_list
+        ]
 
     @staticmethod
     def get_customer_by_email(customer_email: str) -> CustomerOut:
         customer = customers.find_one({"email": customer_email})
         if not customer:
-            raise HTTPException(status_code=404, detail="Cliente não encontrado")
+            raise HTTPException(
+                status_code=404,
+                detail="Cliente não encontrado"
+            )
         return CustomerOut.from_mongo(customer)
 
     @staticmethod
-    def update_customer(customer_id: str, customer_data: Customer) -> CustomerOut:
+    def update_customer(
+        customer_id: str,
+        customer_data: Customer
+    ) -> CustomerOut:
         CustomerService._get_customer_or_404(customer_id)
 
         customer_dict = customer_data.model_dump()
@@ -56,12 +67,18 @@ class CustomerService:
         return CustomerOut.from_mongo(updated_customer)
 
     @staticmethod
-    def patch_customer(customer_id: str, customer_data: CustomerUpdate) -> CustomerOut:
+    def patch_customer(
+        customer_id: str,
+        customer_data: CustomerUpdate
+    ) -> CustomerOut:
         CustomerService._get_customer_or_404(customer_id)
 
         customer_dict = customer_data.model_dump(exclude_unset=True)
         if not customer_dict:
-            raise HTTPException(status_code=400, detail="Nenhum campo enviado para alteração.")
+            raise HTTPException(
+                status_code=400,
+                detail="Nenhum campo enviado para alteração."
+            )
 
         customers.update_one(
             {"_id": ObjectId(customer_id)},
