@@ -1,0 +1,22 @@
+[project]
+name = "fastapi-template"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Bruno R. Pianca",email = "brunorpdev@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi (>=0.124.0,<0.125.0)",
+    "uvicorn (>=0.38.0,<0.39.0)",
+    "python-decouple (>=3.8,<4.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.uv]
+package = false
